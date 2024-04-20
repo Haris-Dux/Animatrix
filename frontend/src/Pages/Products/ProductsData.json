@@ -1,0 +1,38 @@
+[
+    {
+        "Image": "Images/Naruto3.jpg",
+        "Name": "Naruto Junior"
+    },
+    {
+        "Image": "Images/Naruto2.jpg",
+        "Name": "Naruto Uzumaki"
+    },
+    {
+        "Image": "Images/Naruto.jpg",
+        "Name": "Sasuke Uchiha"
+    },
+    {
+        "Image": "Images/Goku.webp",
+        "Name": "Goku"
+    },
+    {
+        "Image": "Images/Vagetaa.webp",
+        "Name": "Vageta"
+    },
+    {
+        "Image": "Images/Demon_Slayer_Kamado.jpg",
+        "Name": "Kamado"
+    },
+    {
+        "Image": "Images/Eren_Yeager.jpg",
+        "Name": "Eren Yeafer"
+    },
+    {
+        "Image": "Images/Light_Yagami.webp",
+        "Name": "Light Yagami"
+    },
+    {
+        "Image": "Images/Monkey_D.Luffy.png",
+        "Name": "Monkey D.Luffy"
+    }
+]
