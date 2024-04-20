@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 import Blogs from './Pages/Blogs/Blog'
 import { Toaster } from 'react-hot-toast'
+import ContactQueries from './Pages/Dashboard/ContactQueries'
+import UserFavourites from './Pages/Dashboard/UserFavourites'
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/contact" element={<Contact/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/signup" element={<SignUp/>}/>
+          <Route path="/contactqueries" element={<ContactQueries/>}/>
+          <Route path="/UserFavourites" element={<UserFavourites/>}/>
           </Routes>
     </Router>
     <Toaster/>
