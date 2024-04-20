@@ -1,4 +1,4 @@
-import react from 'react'
+import react, { useEffect } from 'react'
 import './App.css'
 import Home from './Pages/Home/Home'
 import SignUp from './Pages/SignUp/SignUp'
@@ -14,8 +14,14 @@ import Blogs from './Pages/Blogs/Blog'
 import { Toaster } from 'react-hot-toast'
 import ContactQueries from './Pages/Dashboard/ContactQueries'
 import UserFavourites from './Pages/Dashboard/UserFavourites'
+import { useDispatch } from 'react-redux'
+import { authUserAsync } from '../features/authSlice'
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(authUserAsync())
+  },[])
   return (
     <>
       <Router>

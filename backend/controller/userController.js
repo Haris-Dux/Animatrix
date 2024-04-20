@@ -51,7 +51,7 @@ export const login = async (req, res, next) => {
     email = user.email;
     return res
       .status(200)
-      .json({ login: true, id, name, email, admin });
+      .json({msg:"Login Sucessfull", login: true, id, name, email, admin });
   } catch (error) {
     return res.status(500).json({ login: false, error: error.message });
   }
@@ -80,7 +80,7 @@ export const authUser = async (req, res , next) => {
   if (!user) {
     res.status(404).json({ msg: "Invalid Credentials" });
   }
-  const { id, name, isAuthenticated, superAdmin , email } = user;
-  res.status(200).json({ login: true, id, name, email, isAuthenticated, superAdmin });
+  const { id, name, email, admin  } = user;
+  res.status(200).json({ login: true, id, name, email, admin });
 };
 

@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Data from './ProductsData.json'
 import FlexSearch from 'flexsearch';
-import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import { getProductsAsync } from "../../../features/productsSlice";
 
 function ProductCards() {
   const [query, setQuery] = useState('');
-  // const [Data, setData] = useState('');
+  const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
+  // const Data = useSelector(state => state.products.productData);
+
+  // useEffect(()=>{
+  //   dispatch(getProductsAsync())
+  // },[Data])
+
 
   useEffect(() => {
     const index = new FlexSearch.Index({
-      tokenize: 'full',
+      tokenize: 'full',                          
       threshold: 3,
     });
 
+  
     Data.forEach((item, i) => {
       index.add(i, `${item.Name}`); 
     });
@@ -26,30 +34,8 @@ function ProductCards() {
     setQuery(text);
   };
 
-const options = {
-  method: 'GET',
-  url: 'https://myanimelist.p.rapidapi.com/anime/top/%7Bcategory%7D',
-  headers: {
-    'X-RapidAPI-Key': '3df478d800mshbf99de422e42b07p10c381jsn7694319b3906',
-    'X-RapidAPI-Host': 'myanimelist.p.rapidapi.com'
-  }
-};
-                                                                                                                                                                                   
-useEffect(()=>{
-  const RapidApiData = async () => {
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
-      // setData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  RapidApiData();
-},[])
-
-
-
+ 
+                                                                                                                                                                                  
   return (
     <>
       <section>
@@ -108,18 +94,18 @@ useEffect(()=>{
 
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {query === '' ? (
-              Data.map((item, index) => (
+              Data?.map((item, index) => (
                 <li key={index}>
                   <div className="group block overflow-hidden">
                     <img
-                      src={item.Image}
+                      src={item.picture_url}
                       alt=""
                       className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
                     />
 
                     <div className="relative bg-white pt-3">
                       <h3 className="text-center text-xl text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                        {item.Name}
+                        {item.title}
                       </h3>
                     </div>
                   </div>

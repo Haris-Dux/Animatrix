@@ -2,17 +2,24 @@ import react, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signUserAsync } from "../../../features/authSlice";
 
+
 function SignUpForm() {
-	const dispatch = useDispatch();
-	const [formData,setFormData] = useState({
-		name:'',
-		email:'',
-		password:''
-	});
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		 dispatch(signUserAsync(formData))
-	}
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signUserAsync(formData)).then(() => {
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+      });
+    });
+  };
   return (
     <>
       <section className="mb-5 py-20">
@@ -49,10 +56,10 @@ function SignUpForm() {
                         placeholder="Name"
                         id="name"
                         name="name"
-						value={formData.name}
-						onChange={(e)=>{
-							setFormData({...formData,name:e.target.value})
-						}}
+                        value={formData.name}
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                        }}
                       />
                     </div>
                   </div>
@@ -71,10 +78,10 @@ function SignUpForm() {
                         placeholder="Email"
                         id="email"
                         name="email"
-						value={formData.email}
-						onChange={(e)=>{
-							setFormData({...formData, email: e.target.value})
-						}}
+                        value={formData.email}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                        }}
                       />
                     </div>
                   </div>
@@ -95,10 +102,13 @@ function SignUpForm() {
                         placeholder="Password"
                         id="password"
                         name="password"
-						value={formData.password}
-						onChange={(e)=>{
-							setFormData({...formData, password:e.target.value})
-						}}
+                        value={formData.password}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            password: e.target.value,
+                          });
+                        }}
                       />
                     </div>
                   </div>

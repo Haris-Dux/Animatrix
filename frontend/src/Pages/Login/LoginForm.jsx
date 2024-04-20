@@ -1,14 +1,26 @@
-import react, { useState } from "react";
+import react, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUserAsync } from "../../../features/authSlice";
+import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {User} = useSelector(state => state.auth)
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    dispatch(loginUserAsync(formData))
   };
+  useEffect(()=>{
+    if(User?.login) {
+      navigate("/");
+    }
+  },[User])
   return (
     <>
       <section className="py-20">
