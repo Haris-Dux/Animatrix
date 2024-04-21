@@ -17,8 +17,7 @@ const schema = new mongoose.Schema({
   admin: {
     type: Boolean,
     default: false,
-  },
-  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+  }
 });
 
 export const User = mongoose.model("Users", schema);

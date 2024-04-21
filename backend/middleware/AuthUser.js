@@ -5,7 +5,7 @@ export const adminOnly = async (req,res,next) => {
       if (!user) {
        return res.status(404).json({msg:'Invalid Credentials'})
       };
-      if (user.superAdmin === false){
+      if (user.admin === false){
         return res.status(401).json({msg:'Unauthorized'});    
       }
       next();

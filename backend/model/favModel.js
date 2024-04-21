@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema(
+const favSchema = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: [true, "Department Name is required"],
     },
@@ -10,9 +10,11 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: [true, "Department Name is required"],
     },
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Users" }],
+    userId:{
+     type: mongoose.Schema.Types.ObjectId,
+    }
   },
   { timestamps: true }
 );
 
-export const Support = mongoose.model("product", productSchema);
+export const Fav = mongoose.model("favourites", favSchema);

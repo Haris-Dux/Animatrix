@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from "react";
-import Data from './ProductsData.json'
-import FlexSearch from 'flexsearch';
+// import Data from './ProductsData.json'
+import FlexSearch from "flexsearch";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsAsync } from "../../../features/productsSlice";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function ProductCards() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const dispatch = useDispatch();
   const [searchResults, setSearchResults] = useState([]);
-  // const Data = useSelector(state => state.products.productData);
+  const {User} = useSelector(state => state.auth)
+  const response = useSelector((state) => state.products.productData);
+  const Data = response?.data;
 
-  // useEffect(()=>{
-  //   dispatch(getProductsAsync())
-  // },[Data])
-
+  useEffect(() => {
+    dispatch(getProductsAsync());
+  }, []);
 
   useEffect(() => {
     const index = new FlexSearch.Index({
-      tokenize: 'full',                          
+      tokenize: "full",
       threshold: 3,
     });
 
-  
-    Data.forEach((item, i) => {
-      index.add(i, `${item.Name}`); 
+    Data?.forEach((item, i) => {
+      index.add(i, `${item?.title}`);
     });
 
-    const result = index.search(query);
+    const result = index?.search(query);
     setSearchResults(result);
   }, [query]);
 
@@ -34,8 +36,20 @@ function ProductCards() {
     setQuery(text);
   };
 
- 
-                                                                                                                                                                                  
+  const handleAddToFavourites = async ({ title, images: { jpg: { image_url} } }) => {
+   try {
+   if(!User?.login) {
+    return toast.error('Please login first!')
+   } else {
+    const userId = User.id;
+    await axios.post("http://localhost:8080/api/fav/createFav",{userId,title,imageUrl: image_url});
+   }
+    toast.success("Sucessfully Added");
+   } catch (error) {
+    console.log(error);
+   }
+  }
+
   return (
     <>
       <section>
@@ -74,7 +88,7 @@ function ProductCards() {
             <button
               className="absolute right-3 -translate-y-1/2 top-1/2 p-1"
               type="reset"
-              onClick={()=>setQuery('')}
+              onClick={() => setQuery("")}
             >
               <svg
                 stroke="currentColor"
@@ -93,43 +107,67 @@ function ProductCards() {
           </form>
 
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {query === '' ? (
-              Data?.map((item, index) => (
-                <li key={index}>
-                  <div className="group block overflow-hidden">
-                    <img
-                      src={item.picture_url}
-                      alt=""
-                      className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-                    />
+            {query === ""
+              ? Data?.map((item, index) => (
+                  <li key={index}>
+                    <div className="group block overflow-hidden">
+                      <img
+                        src={item.images.jpg.image_url}
+                        alt=""
+                        className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+                      />
 
-                    <div className="relative bg-white pt-3">
-                      <h3 className="text-center text-xl text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                        {item.title}
-                      </h3>
+                      <div className="flex items-center justify-center gap-8">
+                        <div className="relative bg-white pt-1">
+                          <h3 className="text-center text-xl text-gray-700 group-hover:underline group-hover:underline-offset-4">
+                            {item.title}
+                          </h3>
+                        </div>
+                        <div className="flex items-center justify-center p-3 ">
+                          <button onClick={()=>handleAddToFavourites(item)}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 text-gray-700 cursor-pointer"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M18.364 5.636A9 9 0 1112 2a9 9 0 016.364 14.364l-6.363 6.364-6.364-6.364A9 9 0 1118.364 5.636z"
+                            />
+                          </svg>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))
-            ) : (
-              searchResults.map((resultIndex) => (
-                <li key={resultIndex}>
-                  <div className="group block overflow-hidden">
-                    <img
-                      src={Data[resultIndex].Image}
-                      alt=""
-                      className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-                    />
+                  </li>
+                ))
+              : searchResults?.map((resultIndex) => (
+                  <li key={resultIndex}>
+                    <div className="group block overflow-hidden">
+                      <img
+                        src={Data[resultIndex]?.images.jpg.image_url}
+                        alt=""
+                        className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
+                      />
 
-                    <div className="relative bg-white pt-3">
-                      <h3 className="text-center text-xl text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                        {Data[resultIndex].Name}
-                      </h3>
+                      <div className="relative bg-white pt-3">
+                        <h3 className="text-center text-xl text-gray-700 group-hover:underline group-hover:underline-offset-4">
+                          {Data[resultIndex]?.title}
+                        </h3>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))
-            )}
+                  </li>
+                ))}
           </ul>
         </div>
       </section>

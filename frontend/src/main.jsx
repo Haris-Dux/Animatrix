@@ -4,9 +4,6 @@ import App from './App.jsx'
 import './index.css'
 import {Provider} from 'react-redux'
 import { Store } from '../app/Store.jsx'
-import axios from "axios";
-
-axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

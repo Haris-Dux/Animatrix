@@ -70,7 +70,7 @@ export const logout = async (req, res, next) => {
 };
 
 export const authUser = async (req, res , next) => {
-  console.log(req.session);
+ 
   if (!req.session.userId) {
     return res.status(403).send({ msg: "Please Login Again" });
   }

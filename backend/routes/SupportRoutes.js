@@ -5,7 +5,7 @@ import { adminOnly } from '../middleware/AuthUser.js';
 const supportRouter = express.Router();
 
 supportRouter.post("/createSupport",createSupport);
-supportRouter.post("/getAllSupport",adminOnly,getAllSupport);
+supportRouter.post("/getAllSupport",getAllSupport);
 
 export default supportRouter;
 

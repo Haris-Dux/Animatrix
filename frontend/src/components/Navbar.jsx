@@ -1,26 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LOGO from "../../public/Images/LOGO.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authUserAsync, logoutUserAsync } from "../../features/authSlice";
 
 function Navbar() {
   const [state, setState] = useState(false);
   const dispatch = useDispatch();
+
   const { User } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
-    dispatch(logoutUserAsync()).then(()=>{
-      dispatch(authUserAsync())
-    })
-  }
+    dispatch(logoutUserAsync()).then(() => {
+      dispatch(authUserAsync());
+    });
+  };
 
   const navigation = [
     { title: "Home", path: "/" },
     { title: "Blog", path: "/blogs" },
     { title: "Products", path: "/products" },
     { title: "Contact", path: "/contact" },
+    { title: "Favourites", path: "/UserFavourites" },
   ];
+
+ 
 
   return (
     <>
@@ -82,16 +86,21 @@ function Navbar() {
                   </li>
                 );
               })}
+              {User?.admin ? (<li  className="text-gray-700 hover:text-indigo-600">
+                    <Link to={'/contactqueries'} className="block">
+                    Queries
+                    </Link>
+                  </li>): ""}
               <span className="hidden w-px h-6 bg-gray-300 md:block"></span>
               <div className="space-y-3 items-center gap-x-6 md:flex md:space-y-0">
                 {User?.login ? (
-                     <li>
-                  <Link
-                    onClick={handleLogout}
-                    className="block py-3 px-4 font-medium text-center text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 active:shadow-none rounded-lg shadow md:inline"
-                  >
-                    Log Out
-                  </Link>
+                  <li>
+                    <Link
+                      onClick={handleLogout}
+                      className="block py-3 px-4 font-medium text-center text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 active:shadow-none rounded-lg shadow md:inline"
+                    >
+                      Log Out
+                    </Link>
                   </li>
                 ) : (
                   <>

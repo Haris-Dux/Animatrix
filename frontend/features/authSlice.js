@@ -25,7 +25,9 @@ export const loginUserAsync = createAsyncThunk(
   "user/login",
   async (formdata) => {
     try {
-      const response = await axios.post(loginUrl, formdata);
+      const response = await axios.post(loginUrl, formdata,{
+        withCredentials: true
+      });
       toast.success(response.data.msg);
       return response.data;
     } catch (error) {
@@ -37,7 +39,9 @@ export const loginUserAsync = createAsyncThunk(
 
 export const logoutUserAsync = createAsyncThunk("user/logout", async () => {
   try {
-    const response = await axios.delete(logoutUrl);
+    const response = await axios.delete(logoutUrl,{
+      withCredentials:true
+    });
     toast.success(response.data.msg);
   } catch (error) {
     toast.error(error.response.data.msg);
@@ -46,7 +50,9 @@ export const logoutUserAsync = createAsyncThunk("user/logout", async () => {
 
 export const authUserAsync = createAsyncThunk("user/userSession", async () => {
   try {
-    const response = await axios.get(userSessionUrl);
+    const response = await axios.get(userSessionUrl,{
+      withCredentials:true
+    });
     return response.data;
   } catch (error) {
     console.log(error.response.data.msg);

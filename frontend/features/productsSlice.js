@@ -2,20 +2,41 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 
-const options = {
-  method: 'GET',
-  url: 'https://myanimelist.p.rapidapi.com/anime/top/%7Bcategory%7D',
-  headers: {
-    'X-RapidAPI-Key': '75c6a38082msh3da2eade0300266p1154bejsn865b1a19574f',
-    'X-RapidAPI-Host': 'myanimelist.p.rapidapi.com'
-  }
-};
+const createQueriesUrl = "https://api.jikan.moe/v4/anime";
+const getFavouritesUrl = "http://localhost:8080/api/fav/getFavForUser"
 
+// Create product
 export const getProductsAsync = createAsyncThunk(
-  "products/getProducts",
+  "product/get",
   async () => {
     try {
-      const response = await axios.request(options);
+      const response = await axios.get(createQueriesUrl);
+      return response.data;
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+);
+
+const getQueriesUrl = "http://localhost:8080/api/support/getAllSupport"
+
+export const getQueriesAsync = createAsyncThunk(
+  "products/getQueries",
+  async () => {
+    try {
+      const response = await axios.post(getQueriesUrl);
+      return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+  }
+);
+
+export const getFavForUserAsync = createAsyncThunk(
+  "products/getFav",
+  async (userId) => {
+    try {
+      const response = await axios.post(getFavouritesUrl,userId);
       return response.data;
     } catch (error) {
         console.log(error);
@@ -25,8 +46,12 @@ export const getProductsAsync = createAsyncThunk(
 
 
 
+
+
 const initialState = {
-    productData:null,
+    productData:[],
+    Queries:[],
+    Fav:[],
     loading:false
 };
 
@@ -38,7 +63,7 @@ const productSlice = createSlice({
     extraReducers: (builder) => {
       builder
   
-        // USER LOGIN
+       
         .addCase(getProductsAsync.pending, (state, action) => {
           state.loading = true;
         })
@@ -46,6 +71,24 @@ const productSlice = createSlice({
           state.loading = false;
           state.productData = action.payload;
         })
+
+        .addCase(getFavForUserAsync.pending, (state, action) => {
+          state.loading = true;
+        })
+        .addCase(getFavForUserAsync.fulfilled, (state, action) => {
+          state.loading = false;
+          state.Fav = action.payload;
+        })
+
+         
+         .addCase(getQueriesAsync.pending, (state, action) => {
+          state.loading = true;
+        })
+        .addCase(getQueriesAsync.fulfilled, (state, action) => {
+          state.loading = false;
+          state.Queries = action.payload;
+        })
+
 
     
     },

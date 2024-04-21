@@ -19,8 +19,8 @@ export const createSupport = async (req, res) => {
 
 export const getAllSupport = async (req, res) => {
   try {
-    const supportData = await Support.find({createdAt:-1})
-    return res.status(201).json({msg: "Successfully Submitted",supportData});
+    const supportData = await Support.find({}).sort({createdAt:-1})
+    return res.status(201).json(supportData);
   } catch (error) {
     return res.status(400).json({msg:error.message});
   }
